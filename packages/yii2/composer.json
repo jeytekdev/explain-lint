@@ -29,6 +29,12 @@
     "require-dev": {
         "phpunit/phpunit": "^10.5 || ^11.0"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "ExplainLint\\Yii2\\": "src/"

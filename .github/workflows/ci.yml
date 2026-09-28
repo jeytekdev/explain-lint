@@ -49,7 +49,7 @@ jobs:
       - name: Configure local path repository for core
         working-directory: packages/doctrine
         run: |
-          composer config repositories.explain-lint-core '{"type": "path", "url": "../core"}' --json
+          composer config repositories.explain-lint-core '{"type": "path", "url": "../core", "options": {"versions": {"jeytekdev/explain-lint": "1.0.0"}}}' --json
 
       - name: Require DBAL version
         working-directory: packages/doctrine
@@ -147,7 +147,7 @@ jobs:
       - name: Configure local path repository for core
         working-directory: packages/laravel
         run: |
-          composer config repositories.explain-lint-core '{"type": "path", "url": "../core"}' --json
+          composer config repositories.explain-lint-core '{"type": "path", "url": "../core", "options": {"versions": {"jeytekdev/explain-lint": "1.0.0"}}}' --json
 
       - name: Install dependencies
         working-directory: packages/laravel
@@ -172,7 +172,7 @@ jobs:
       - name: Configure local path repository for core
         working-directory: packages/yii2
         run: |
-          composer config repositories.explain-lint-core '{"type": "path", "url": "../core"}' --json
+          composer config repositories.explain-lint-core '{"type": "path", "url": "../core", "options": {"versions": {"jeytekdev/explain-lint": "1.0.0"}}}' --json
 
       - name: Install dependencies
         working-directory: packages/yii2
