@@ -13,13 +13,13 @@ jobs:
       matrix:
         include:
           - package: core
-            repository: jeytekdev/explain-lint-core
+            repository: explain-lint-core
           - package: laravel
-            repository: jeytekdev/explain-lint-laravel
+            repository: explain-lint-laravel
           - package: doctrine
-            repository: jeytekdev/explain-lint-doctrine
+            repository: explain-lint-doctrine
           - package: yii2
-            repository: jeytekdev/explain-lint-yii2
+            repository: explain-lint-yii2
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,11 +28,12 @@ jobs:
       - name: Split packages/${{ matrix.package }} and push tag
         uses: symplify/monorepo-split-github-action@v2.3.0
         with:
-          package-directory: "packages/${{ matrix.package }}"
-          repository-organization: "jeytekdev"
-          repository-name: "${{ matrix.repository }}"
-          user-name: "jeytekdev-bot"
-          user-email: "bot@jeytekdev.dev"
+          package_directory: "packages/${{ matrix.package }}"
+          repository_organization: "jeytekdev"
+          repository_name: "${{ matrix.repository }}"
+          branch: "main"
+          user_name: "jeytekdev-bot"
+          user_email: "bot@jeytekdev.dev"
           tag: ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.SPLIT_GITHUB_TOKEN }}
