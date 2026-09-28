@@ -1,0 +1,14 @@
+/vendor/
+/packages/*/vendor/
+composer.lock
+packages/*/composer.lock
+.phpunit.cache/
+packages/*/.phpunit.cache/
+.phpunit.result.cache
+packages/*/.phpunit.result.cache
+build/
+packages/*/build/
+.env
+.idea/
+.vscode/
+*.log

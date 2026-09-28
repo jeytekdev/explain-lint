@@ -1,0 +1,56 @@
+{
+    "name": "jeytekdev/explain-lint-yii2",
+    "description": "Yii2 bridge for jeytekdev/explain-lint — wraps the DB connection's PDO handle and re-runs EXPLAIN on the same connection.",
+    "type": "yii2-extension",
+    "license": "MIT",
+    "keywords": [
+        "yii2",
+        "sql",
+        "explain",
+        "testing",
+        "query-analysis"
+    ],
+    "homepage": "https://github.com/jeytekdev/explain-lint-yii2",
+    "support": {
+        "issues": "https://github.com/jeytekdev/explain-lint-yii2/issues",
+        "source": "https://github.com/jeytekdev/explain-lint-yii2"
+    },
+    "authors": [
+        {
+            "name": "Jeytekdev",
+            "homepage": "https://github.com/jeytekdev"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "jeytekdev/explain-lint": "^1.0",
+        "yiisoft/yii2": "^2.0.45"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5 || ^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ExplainLint\\Yii2\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ExplainLint\\Yii2\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "bootstrap": "ExplainLint\\Yii2\\Bootstrap",
+        "branch-alias": {
+            "dev-main": "1.x-dev"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
+    }
+}

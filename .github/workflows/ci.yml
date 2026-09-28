@@ -1,0 +1,160 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit:
+    name: "Unit tests (PHP ${{ matrix.php }})"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["8.1", "8.2", "8.3"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: pdo, pdo_mysql, pdo_pgsql, pdo_sqlite
+          coverage: none
+
+      - name: Install root dependencies
+        run: composer update --no-interaction --prefer-dist
+
+      - name: Unit tests (core)
+        run: vendor/bin/phpunit -c packages/core/phpunit.xml.dist --testsuite unit
+
+  doctrine-matrix:
+    name: "Doctrine bridge (DBAL ${{ matrix.dbal }})"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dbal: ["^3.2", "^4.0"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: pdo, pdo_mysql, pdo_pgsql
+          coverage: none
+
+      - name: Require DBAL version
+        working-directory: packages/doctrine
+        run: composer require --no-interaction --no-update "doctrine/dbal:${{ matrix.dbal }}"
+
+      - name: Install dependencies
+        working-directory: packages/doctrine
+        run: composer update --no-interaction --prefer-dist
+
+      - name: Unit tests
+        working-directory: packages/doctrine
+        run: ../../vendor/bin/phpunit -c phpunit.xml.dist || vendor/bin/phpunit -c phpunit.xml.dist
+
+  integration:
+    name: "Integration tests (real MySQL + PostgreSQL)"
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: explain_lint_test
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -uroot -proot"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: explain_lint_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      EXPLAIN_LINT_TEST_MYSQL_DSN: "mysql:host=127.0.0.1;port=3306;dbname=explain_lint_test"
+      EXPLAIN_LINT_TEST_MYSQL_USER: root
+      EXPLAIN_LINT_TEST_MYSQL_PASSWORD: root
+      EXPLAIN_LINT_TEST_PGSQL_DSN: "pgsql:host=127.0.0.1;port=5432;dbname=explain_lint_test"
+      EXPLAIN_LINT_TEST_PGSQL_USER: postgres
+      EXPLAIN_LINT_TEST_PGSQL_PASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: pdo, pdo_mysql, pdo_pgsql
+          coverage: none
+
+      - name: Install root dependencies
+        run: composer update --no-interaction --prefer-dist
+
+      - name: Integration tests (core)
+        run: vendor/bin/phpunit -c packages/core/phpunit.xml.dist --testsuite integration
+
+  laravel:
+    name: "Laravel bridge (Orchestra Testbench)"
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: explain_lint_test
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -uroot -proot"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      EXPLAIN_LINT_TEST_MYSQL_HOST: 127.0.0.1
+      EXPLAIN_LINT_TEST_MYSQL_PORT: 3306
+      EXPLAIN_LINT_TEST_MYSQL_DATABASE: explain_lint_test
+      EXPLAIN_LINT_TEST_MYSQL_USER: root
+      EXPLAIN_LINT_TEST_MYSQL_PASSWORD: root
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: pdo, pdo_sqlite, pdo_mysql
+          coverage: none
+
+      - name: Install root dependencies
+        run: composer update --no-interaction --prefer-dist
+
+      - name: Testbench suite
+        run: vendor/bin/phpunit -c packages/laravel/phpunit.xml.dist
+
+  yii2:
+    name: "Yii2 bridge"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: pdo, pdo_sqlite
+          coverage: none
+
+      - name: Install root dependencies
+        run: composer update --no-interaction --prefer-dist
+
+      - name: Unit tests
+        run: vendor/bin/phpunit -c packages/yii2/phpunit.xml.dist

@@ -1,0 +1,38 @@
+name: Split monorepo
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  split:
+    name: "Split ${{ matrix.package }}"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - package: core
+            repository: jeytekdev/explain-lint
+          - package: laravel
+            repository: jeytekdev/explain-lint-laravel
+          - package: doctrine
+            repository: jeytekdev/explain-lint-doctrine
+          - package: yii2
+            repository: jeytekdev/explain-lint-yii2
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Split packages/${{ matrix.package }} and push tag
+        uses: symplify/monorepo-split-github-action@v2.3.0
+        with:
+          package-directory: "packages/${{ matrix.package }}"
+          repository-organization: "jeytekdev"
+          repository-name: "${{ matrix.repository }}"
+          user-name: "jeytekdev-bot"
+          user-email: "bot@jeytekdev.dev"
+          tag: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.SPLIT_GITHUB_TOKEN }}
