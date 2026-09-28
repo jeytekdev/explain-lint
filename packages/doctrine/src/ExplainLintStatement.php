@@ -44,14 +44,16 @@ final class ExplainLintStatement extends AbstractStatementMiddleware
     }
 
     /**
-     * Declaring the (deprecated-since-3.x, removed-in-4.x) `$params`
-     * parameter as optional keeps this compatible both with DBAL 3's
-     * `execute(?array $params = null)` and DBAL 4's `execute()` — passing
-     * an extra argument to a zero-parameter PHP method is always legal, it
-     * is simply ignored by the callee, so `parent::execute($params)` is
-     * safe to call unconditionally on either version.
+     * `$params` must stay untyped: DBAL 3's `AbstractStatementMiddleware`
+     * declares `execute($params = null)` with no type hint, and PHP's
+     * contravariance rules forbid narrowing it to `?array` here. Declaring
+     * it as an extra optional parameter (DBAL 4's `execute()` takes none)
+     * is legal — passing an extra argument to a zero-parameter PHP method
+     * is always allowed, it is simply ignored by the callee — so
+     * `parent::execute($params)` is safe to call unconditionally on either
+     * version.
      */
-    public function execute(?array $params = null): Result
+    public function execute($params = null): Result
     {
         $result = parent::execute($params);
 
