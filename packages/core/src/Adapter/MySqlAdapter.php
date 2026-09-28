@@ -48,6 +48,15 @@ final class MySqlAdapter implements ExplainAdapter
                 continue;
             }
 
+            if (strtolower((string) ($row['select_type'] ?? '')) === 'insert') {
+                // The write target of an `INSERT` — always shows type=ALL and
+                // possible_keys=NULL because it isn't being scanned/read, it's
+                // being written to. For `INSERT ... SELECT`, the actual source
+                // table gets its own row with a different select_type and is
+                // still analyzed normally below.
+                continue;
+            }
+
             $type = (string) ($row['type'] ?? '');
             $possibleKeys = $row['possible_keys'] ?? null;
             $key = $row['key'] ?? null;

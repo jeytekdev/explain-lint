@@ -120,6 +120,37 @@ final class MySqlAdapterTest extends TestCase
         self::assertContains(ReasonCode::HighRowEstimate, $reasons);
     }
 
+    public function testInsertTargetRowProducesNoFindings(): void
+    {
+        $plan = $this->plan([
+            'select_type' => 'INSERT',
+            'table' => 'el_posts',
+            'type' => 'ALL',
+            'possible_keys' => null,
+            'key' => null,
+            'extra' => '',
+            'rows' => '5000',
+        ]);
+
+        self::assertSame([], $this->adapter->analyze($plan, 1000));
+    }
+
+    public function testInsertSelectSourceRowIsStillAnalyzed(): void
+    {
+        $plan = [
+            'rows' => [
+                ['select_type' => 'INSERT', 'table' => 'orders_archive', 'type' => 'ALL', 'possible_keys' => null, 'key' => null, 'extra' => '', 'rows' => '1'],
+                ['select_type' => 'SIMPLE', 'table' => 'orders', 'type' => 'ALL', 'possible_keys' => null, 'key' => null, 'extra' => '', 'rows' => '5000'],
+            ],
+        ];
+
+        $findings = $this->adapter->analyze($plan, 1000);
+        $tables = array_map(static fn ($f) => $f->table, $findings);
+
+        self::assertNotContains('orders_archive', $tables);
+        self::assertContains('orders', $tables);
+    }
+
     public function testDerivedTablePseudoNamesAreIgnored(): void
     {
         $plan = $this->plan([
