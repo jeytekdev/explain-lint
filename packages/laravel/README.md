@@ -120,34 +120,6 @@ Relying solely on the in-process `exit(1)` from the PHPUnit run is a single poin
 ],
 ```
 
-## Local development against an unreleased version (Composer path repository)
-
-Useful while iterating on the package itself, before it's tagged/published. Composer's `path` repository type needs no VCS at all — it just links (symlinks by default on Linux/macOS) to a directory on disk:
-
-```json
-{
-    "repositories": [
-        { "type": "path", "url": "/absolute/path/to/explain-lint/packages/core" },
-        { "type": "path", "url": "/absolute/path/to/explain-lint/packages/laravel" }
-    ]
-}
-```
-
-```bash
-composer require --dev jeytekdev/explain-lint-laravel:@dev
-```
-
-**Running inside Docker:** the path above must exist *inside the container*, not just on the host — bind-mount it:
-
-```yaml
-services:
-  app:
-    volumes:
-      - /absolute/path/to/explain-lint:/opt/explain-lint:ro
-```
-
-and point the `path` repository `url` at `/opt/explain-lint/packages/...` instead.
-
 ## Troubleshooting
 
 **A table with very few rows still gets flagged as `error`.** Table-size-based suppression (tiny/small tables never trigger scan rules) relies on `information_schema.TABLES.TABLE_ROWS` on MySQL, which is a cached estimate — on a freshly migrated test database it's often `NULL` until `ANALYZE TABLE` runs, and an unknown size is treated as "could be large" on purpose (so real regressions aren't silently hidden by a stale stat). If this shows up a lot on your test DB, either run `ANALYZE TABLE <name>` as part of your test setup, or allowlist the specific table/query.

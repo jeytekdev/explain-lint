@@ -84,21 +84,6 @@ Two ways, both in `explain-lint.php`, both require a non-empty reason:
 
 Only connections whose `pdoClass` resolves to a real `\PDO` (or a `\PDO` subclass) are captured — this covers every stock Yii2 driver (`mysql`, `pgsql`, `sqlite`). A connection swapped out for something else entirely (e.g. a non-PDO custom `Connection` subclass) simply isn't wrapped; nothing errors, there's just nothing to analyze.
 
-## Local development against an unreleased version (Composer path repository)
-
-```json
-{
-    "repositories": [
-        { "type": "path", "url": "/absolute/path/to/explain-lint/packages/core" },
-        { "type": "path", "url": "/absolute/path/to/explain-lint/packages/yii2" }
-    ]
-}
-```
-
-```bash
-composer require --dev jeytekdev/explain-lint-yii2:@dev
-```
-
 ## License
 
 MIT

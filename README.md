@@ -90,30 +90,6 @@ OrdersTest::test_pending_orders
 
 In `strict` mode, this fails `vendor/bin/phpunit`. In `warn` mode, it's reported but the build stays green — useful for rolling this out on a legacy codebase one rule at a time.
 
-## Repository layout
-
-```
-explain-lint/
-  packages/
-    core/       composer.json → jeytekdev/explain-lint
-    laravel/    composer.json → jeytekdev/explain-lint-laravel
-    doctrine/   composer.json → jeytekdev/explain-lint-doctrine
-    yii2/       composer.json → jeytekdev/explain-lint-yii2
-  composer.json  # root: path-repositories of packages/* for local dev
-```
-
-This is a monorepo for development — atomic PRs across all four packages at once (e.g. add a field to the shared `Violation` DTO and fix every bridge in the same commit) — but each package is split out to its own read-only GitHub repo and Packagist entry on tag (see `.github/workflows/split.yml`), so `composer require jeytekdev/explain-lint-laravel` never pulls in `doctrine/dbal`.
-
-### Local development
-
-```bash
-composer install                 # installs all four packages via path repositories
-composer test                    # unit tests for all four packages
-composer test:core               # just packages/core
-docker compose up -d              # MySQL + PostgreSQL for the integration test-suite
-vendor/bin/phpunit -c packages/core/phpunit.xml.dist --testsuite integration
-```
-
 ## Roadmap / not in this release
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for good-first-issue-sized scope:

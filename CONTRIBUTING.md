@@ -4,7 +4,7 @@ Thanks for looking at this. A few things that make review faster, then the good-
 
 ## Repository layout
 
-This is a monorepo (see [README.md](README.md#repository-layout)). Each package under `packages/*` has its own `composer.json`, `src/`, `tests/` and `README.md`. The root `composer.json` wires them together via `path` repositories so `composer install` at the repo root gives you all four packages linked to each other's working copy — no `composer require` round-trip needed while developing across package boundaries.
+This is a monorepo. Each package under `packages/*` has its own `composer.json`, `src/`, `tests/` and `README.md`. The root `composer.json` wires them together via `path` repositories so `composer install` at the repo root gives you all four packages linked to each other's working copy — no `composer require` round-trip needed while developing across package boundaries.
 
 ```bash
 composer install
@@ -26,6 +26,36 @@ vendor/bin/phpunit -c packages/core/phpunit.xml.dist --testsuite integration
 3. Add unit tests against fixture EXPLAIN output (`packages/core/tests/Unit/Adapter`) — no real database needed, `analyze()` is a pure function of the parsed plan.
 4. If the rule needs table-size tiering, add the reason code to `RuleEngine::SCAN_REASON_CODES`.
 5. Document it in `packages/core/stubs/explain-lint.php.stub` and the core README's configuration section.
+
+## Testing a change against a real downstream app
+
+Useful while iterating on a package here, before it's tagged/published — point a real Laravel/Symfony/Yii2 app's `composer.json` at your local checkout instead of Packagist. Composer's `path` repository type needs no VCS at all — it just links (symlinks by default on Linux/macOS) to a directory on disk:
+
+```json
+{
+    "repositories": [
+        { "type": "path", "url": "/absolute/path/to/explain-lint/packages/core" },
+        { "type": "path", "url": "/absolute/path/to/explain-lint/packages/laravel" }
+    ]
+}
+```
+
+```bash
+composer require --dev jeytekdev/explain-lint-laravel:@dev
+```
+
+Swap `packages/laravel` / `explain-lint-laravel` for `doctrine`/`yii2` as needed — `packages/core` is always required alongside whichever bridge you're testing.
+
+**Running inside Docker:** the path above must exist *inside the container*, not just on the host — bind-mount it:
+
+```yaml
+services:
+  app:
+    volumes:
+      - /absolute/path/to/explain-lint:/opt/explain-lint:ro
+```
+
+and point the `path` repository `url` at `/opt/explain-lint/packages/...` instead.
 
 ## Good first issues (not in v1)
 
