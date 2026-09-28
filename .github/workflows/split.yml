@@ -13,7 +13,7 @@ jobs:
       matrix:
         include:
           - package: core
-            repository: jeytekdev/explain-lint
+            repository: jeytekdev/explain-lint-core
           - package: laravel
             repository: jeytekdev/explain-lint-laravel
           - package: doctrine

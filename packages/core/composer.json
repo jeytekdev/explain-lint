@@ -14,10 +14,10 @@
         "index",
         "performance"
     ],
-    "homepage": "https://github.com/jeytekdev/explain-lint",
+    "homepage": "https://github.com/jeytekdev/explain-lint-core",
     "support": {
-        "issues": "https://github.com/jeytekdev/explain-lint/issues",
-        "source": "https://github.com/jeytekdev/explain-lint"
+        "issues": "https://github.com/jeytekdev/explain-lint-core/issues",
+        "source": "https://github.com/jeytekdev/explain-lint-core"
     },
     "authors": [
         {
