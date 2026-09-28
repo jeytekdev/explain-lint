@@ -12,14 +12,13 @@ use ExplainLint\Recorder\CapturedQuery;
 use ExplainLint\Recorder\QueryRecorder;
 
 /**
- * `bindValue()`'s third parameter's type changed between DBAL 3.x (plain
- * int constants on ParameterType) and 4.x (ParameterType became a real
- * backed enum) — a genuine, incompatible type-hint change between the two
- * supported DBAL major versions. `mixed` is used for every parameter here
- * instead of a concrete type: PHP's contravariance rules allow an override
- * to widen a parameter's type, and `mixed` is a supertype of both the 3.x
- * and 4.x declarations, so this one signature stays valid against either
- * installed DBAL version.
+ * `bindValue()`'s signature changed between DBAL 3.x (untyped params, no
+ * return type) and 4.x (`string|int $param, mixed $value, ParameterType
+ * $type): void`). `mixed` widens every parameter enough to stay compatible
+ * with both. The return type must be exactly `void`: DBAL 4's parent
+ * declares `void`, and a `void` parent forbids any other return type in an
+ * override — but declaring `void` here is also legal against DBAL 3's
+ * parent, since it declares no return type at all.
  */
 final class ExplainLintStatement extends AbstractStatementMiddleware
 {
@@ -36,11 +35,11 @@ final class ExplainLintStatement extends AbstractStatementMiddleware
         parent::__construct($statement);
     }
 
-    public function bindValue(mixed $param, mixed $value, mixed $type = ParameterType::STRING): bool
+    public function bindValue(mixed $param, mixed $value, mixed $type = ParameterType::STRING): void
     {
         $this->boundParams[$param] = $value;
 
-        return parent::bindValue($param, $value, $type);
+        parent::bindValue($param, $value, $type);
     }
 
     /**

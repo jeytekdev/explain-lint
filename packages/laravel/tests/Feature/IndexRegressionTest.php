@@ -33,9 +33,14 @@ final class IndexRegressionTest extends TestCase
             $table->string('status', 20);
         });
 
+        // A 50/50 split would make "status = 'published'" match ~2500 of the
+        // 5000 rows — enough to trip the unrelated high-row-estimate rule
+        // (threshold 1000 below) even with the index in use. Make
+        // "published" a genuine minority so the index-scan test only
+        // exercises what it claims to.
         $rows = [];
         for ($i = 0; $i < 5000; $i++) {
-            $rows[] = ['status' => $i % 2 === 0 ? 'published' : 'draft'];
+            $rows[] = ['status' => $i % 20 === 0 ? 'published' : 'draft'];
             if (count($rows) === 500) {
                 DB::table('el_posts')->insert($rows);
                 $rows = [];
