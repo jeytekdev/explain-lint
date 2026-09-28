@@ -22,11 +22,13 @@ jobs:
           extensions: pdo, pdo_mysql, pdo_pgsql, pdo_sqlite
           coverage: none
 
-      - name: Install root dependencies
+      - name: Install dependencies
+        working-directory: packages/core
         run: composer update --no-interaction --prefer-dist
 
-      - name: Unit tests (core)
-        run: vendor/bin/phpunit -c packages/core/phpunit.xml.dist --testsuite unit
+      - name: Unit tests
+        working-directory: packages/core
+        run: vendor/bin/phpunit -c phpunit.xml.dist --testsuite unit
 
   doctrine-matrix:
     name: "Doctrine bridge (DBAL ${{ matrix.dbal }})"
@@ -44,6 +46,10 @@ jobs:
           extensions: pdo, pdo_mysql, pdo_pgsql
           coverage: none
 
+      - name: Configure local path repository for core
+        working-directory: packages/doctrine
+        run: composer config repositories.explain-lint-core '{"type": "path", "url": "../core"}' --json
+
       - name: Require DBAL version
         working-directory: packages/doctrine
         run: composer require --no-interaction --no-update "doctrine/dbal:${{ matrix.dbal }}"
@@ -54,7 +60,7 @@ jobs:
 
       - name: Unit tests
         working-directory: packages/doctrine
-        run: ../../vendor/bin/phpunit -c phpunit.xml.dist || vendor/bin/phpunit -c phpunit.xml.dist
+        run: vendor/bin/phpunit -c phpunit.xml.dist
 
   integration:
     name: "Integration tests (real MySQL + PostgreSQL)"
@@ -99,11 +105,13 @@ jobs:
           extensions: pdo, pdo_mysql, pdo_pgsql
           coverage: none
 
-      - name: Install root dependencies
+      - name: Install dependencies
+        working-directory: packages/core
         run: composer update --no-interaction --prefer-dist
 
-      - name: Integration tests (core)
-        run: vendor/bin/phpunit -c packages/core/phpunit.xml.dist --testsuite integration
+      - name: Integration tests
+        working-directory: packages/core
+        run: vendor/bin/phpunit -c phpunit.xml.dist --testsuite integration
 
   laravel:
     name: "Laravel bridge (Orchestra Testbench)"
@@ -135,11 +143,17 @@ jobs:
           extensions: pdo, pdo_sqlite, pdo_mysql
           coverage: none
 
-      - name: Install root dependencies
+      - name: Configure local path repository for core
+        working-directory: packages/laravel
+        run: composer config repositories.explain-lint-core '{"type": "path", "url": "../core"}' --json
+
+      - name: Install dependencies
+        working-directory: packages/laravel
         run: composer update --no-interaction --prefer-dist
 
       - name: Testbench suite
-        run: vendor/bin/phpunit -c packages/laravel/phpunit.xml.dist
+        working-directory: packages/laravel
+        run: vendor/bin/phpunit -c phpunit.xml.dist
 
   yii2:
     name: "Yii2 bridge"
@@ -153,8 +167,14 @@ jobs:
           extensions: pdo, pdo_sqlite
           coverage: none
 
-      - name: Install root dependencies
+      - name: Configure local path repository for core
+        working-directory: packages/yii2
+        run: composer config repositories.explain-lint-core '{"type": "path", "url": "../core"}' --json
+
+      - name: Install dependencies
+        working-directory: packages/yii2
         run: composer update --no-interaction --prefer-dist
 
       - name: Unit tests
-        run: vendor/bin/phpunit -c packages/yii2/phpunit.xml.dist
+        working-directory: packages/yii2
+        run: vendor/bin/phpunit -c phpunit.xml.dist
