@@ -46,6 +46,10 @@ final class PostgresIntegrationTest extends TestCase
         $this->seed('el_tiny', 5);
         $this->seed('el_small', 500);
         $this->seed('el_large', 5000);
+        // A single rare value, so a query against it is genuinely selective —
+        // status is otherwise an even 50/50 split, which Postgres's planner
+        // correctly prefers to sequentially scan rather than use the index.
+        $this->pdo->exec("INSERT INTO el_large (status) VALUES ('rare-value')");
         $this->pdo->exec('ANALYZE el_tiny, el_small, el_large');
 
         $this->runner = new ExplainRunner(adapters: [new PostgresAdapter()]);
@@ -79,7 +83,7 @@ final class PostgresIntegrationTest extends TestCase
 
     public function testIndexScanOnLargeTableStaysGreen(): void
     {
-        $verdict = $this->evaluate("SELECT * FROM el_large WHERE status = 'active'");
+        $verdict = $this->evaluate("SELECT * FROM el_large WHERE status = 'rare-value'");
 
         self::assertTrue($verdict->passed);
     }

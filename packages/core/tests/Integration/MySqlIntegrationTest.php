@@ -52,7 +52,10 @@ final class MySqlIntegrationTest extends TestCase
         for ($i = 0; $i < 5000; $i++) {
             $this->pdo->exec("INSERT INTO el_large (status) VALUES ('" . ($i % 2 === 0 ? 'active' : 'inactive') . "')");
         }
-        $this->pdo->exec('ANALYZE TABLE el_tiny, el_small, el_large');
+        // ANALYZE TABLE returns a result set — PDO::exec() is only for
+        // statements that don't, and leaves the connection with a dangling
+        // unbuffered result that fails the next query() call.
+        $this->pdo->query('ANALYZE TABLE el_tiny, el_small, el_large')->closeCursor();
 
         $this->runner = new ExplainRunner(adapters: [new MySqlAdapter()]);
         $this->ruleEngine = new RuleEngine(Config::fromArray([
@@ -91,7 +94,7 @@ final class MySqlIntegrationTest extends TestCase
         for ($i = 0; $i < 5000; $i++) {
             $this->pdo->exec("INSERT INTO el_no_index (status) VALUES ('" . ($i % 2 === 0 ? 'active' : 'inactive') . "')");
         }
-        $this->pdo->exec('ANALYZE TABLE el_no_index');
+        $this->pdo->query('ANALYZE TABLE el_no_index')->closeCursor();
 
         $verdict = $this->evaluate("SELECT * FROM el_no_index WHERE status = 'active'");
 
