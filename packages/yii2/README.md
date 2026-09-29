@@ -45,7 +45,7 @@ Run this from your **project root** (where `composer.json`/`vendor/` live). Set 
 
 Then run your suite as usual — no other code changes needed.
 
-**If your tests run via `vendor/bin/codecept run`** (the default for the Yii2 basic/advanced templates), skip the `explain-lint:install` step above: Codeception never bootstraps PHPUnit's `<extensions>` mechanism, so the core PHPUnit extension never runs under `codecept run`, even with a `phpunit.xml` present — install [`jeytekdev/explain-lint-codeception`](../codeception/README.md) instead and register it in `codeception.yml`. This `ExplainLintBehavior` (the part that wraps the connection's PDO) is unaffected either way.
+**If your tests run via `vendor/bin/codecept run`** (the default for the Yii2 basic/advanced templates), run `explain-lint:install --config-only` instead of the plain form above — Codeception never bootstraps PHPUnit's `<extensions>` mechanism, so registering the PHPUnit extension in `phpunit.xml` is pointless under `codecept run` even when the file exists. Install [`jeytekdev/explain-lint-codeception`](../codeception/README.md) too, and register it in `codeception.yml`. This `ExplainLintBehavior` (the part that wraps the connection's PDO) is unaffected either way.
 
 ## Reading the report
 
