@@ -22,10 +22,11 @@ This is a monorepo; install only the package for your stack — nothing pulls in
 
 | Package | Packagist | For |
 |---|---|---|
-| [`jeytekdev/explain-lint`](packages/core) | [core](https://packagist.org/packages/jeytekdev/explain-lint) | Framework-agnostic PDO wrapper + PHPUnit/Pest integration. Required by both bridges. |
+| [`jeytekdev/explain-lint`](packages/core) | [core](https://packagist.org/packages/jeytekdev/explain-lint) | Framework-agnostic PDO wrapper + PHPUnit/Pest integration. Required by every bridge. |
 | [`jeytekdev/explain-lint-laravel`](packages/laravel) | [bridge](https://packagist.org/packages/jeytekdev/explain-lint-laravel) | Laravel, via `DB::listen()`, auto-discovered service provider. |
 | [`jeytekdev/explain-lint-doctrine`](packages/doctrine) | [bridge](https://packagist.org/packages/jeytekdev/explain-lint-doctrine) | Symfony/Doctrine DBAL, via `Driver\Middleware`. |
 | [`jeytekdev/explain-lint-yii2`](packages/yii2) | [bridge](https://packagist.org/packages/jeytekdev/explain-lint-yii2) | Yii2, via a `Connection` behavior, auto-discovered bootstrap. |
+| [`jeytekdev/explain-lint-codeception`](packages/codeception) | [bridge](https://packagist.org/packages/jeytekdev/explain-lint-codeception) | Required alongside any of the above **if your tests run via `codecept run`** instead of `vendor/bin/phpunit` directly — Codeception never bootstraps PHPUnit's native extension mechanism, so the core PHPUnit extension alone produces no report under Codeception. |
 
 ## Install — pick your stack
 

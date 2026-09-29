@@ -20,6 +20,8 @@ jobs:
             repository: explain-lint-doctrine
           - package: yii2
             repository: explain-lint-yii2
+          - package: codeception
+            repository: explain-lint-codeception
     steps:
       - uses: actions/checkout@v4
         with:

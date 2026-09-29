@@ -4,11 +4,11 @@ Thanks for looking at this. A few things that make review faster, then the good-
 
 ## Repository layout
 
-This is a monorepo. Each package under `packages/*` has its own `composer.json`, `src/`, `tests/` and `README.md`. The root `composer.json` wires them together via `path` repositories so `composer install` at the repo root gives you all four packages linked to each other's working copy — no `composer require` round-trip needed while developing across package boundaries.
+This is a monorepo. Each package under `packages/*` has its own `composer.json`, `src/`, `tests/` and `README.md`. The root `composer.json` wires them together via `path` repositories so `composer install` at the repo root gives you all five packages linked to each other's working copy — no `composer require` round-trip needed while developing across package boundaries.
 
 ```bash
 composer install
-composer test              # unit tests, all four packages
+composer test              # unit tests, all five packages
 docker compose up -d       # MySQL + PostgreSQL, for the core integration suite
 vendor/bin/phpunit -c packages/core/phpunit.xml.dist --testsuite integration
 ```
@@ -17,6 +17,7 @@ vendor/bin/phpunit -c packages/core/phpunit.xml.dist --testsuite integration
 
 - `packages/core` — everything engine/rule/reporting related, framework-agnostic. Most PRs that add a new rule or reason code touch only this package.
 - `packages/laravel`, `packages/doctrine`, `packages/yii2` — thin capture adapters. They should stay thin: SQL parsing, rule evaluation and reporting all belong in core.
+- `packages/codeception` — not a capture adapter, an *analysis-trigger* adapter: Codeception never bootstraps PHPUnit's native `<extensions>` mechanism, so `ExplainLint\PHPUnit\ExplainLintExtension` never runs under `codecept run`. This package wires the same `TestAnalysisRunner`/reporters to Codeception's own `Extension`/event dispatcher instead. Required alongside any capture adapter whenever the consuming project runs tests via `codecept run`.
 - If you're changing a shared DTO (`CapturedQuery`, `Violation`, `Verdict`, ...), update every bridge in the same PR — that's the whole point of the monorepo.
 
 ## Adding a new EXPLAIN rule
@@ -77,6 +78,6 @@ Everything currently reports on a single run. Nothing exists yet for e.g. "this 
 
 ## Pull requests
 
-- Keep bridge packages (`laravel`, `doctrine`, `yii2`) free of SQL parsing/rule logic — if you find yourself writing analysis code there, it probably belongs in `core`.
+- Keep bridge packages (`laravel`, `doctrine`, `yii2`, `codeception`) free of SQL parsing/rule logic — if you find yourself writing analysis code there, it probably belongs in `core`.
 - Unit tests for `packages/core` should not require a real database — feed adapters fixture EXPLAIN output directly. Real MySQL/PostgreSQL behavior belongs in `packages/core/tests/Integration`.
 - One logical change per PR, but feel free to touch all four packages in it if the change is a DTO/interface shared across them.
