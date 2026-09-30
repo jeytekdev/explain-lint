@@ -103,7 +103,7 @@ final class MySqlIntegrationTest extends TestCase
         $this->pdo->exec('DROP TABLE el_no_index');
     }
 
-    private function evaluate(string $sql): \ExplainLint\Verdict
+    private function evaluate(string $sql): \Jeytekdev\ExplainLint\Verdict
     {
         $query = new CapturedQuery($sql, [], $this->pdo, 'default', QueryPhase::Test);
         $outcome = $this->runner->run($query);

@@ -37,7 +37,7 @@ final class InstallCommandTest extends TestCase
 
         self::assertFileExists($this->projectDir . '/explain-lint.php');
         self::assertStringContainsString(
-            'ExplainLint\PHPUnit\ExplainLintExtension',
+            'Jeytekdev\ExplainLint\PHPUnit\ExplainLintExtension',
             (string) file_get_contents($this->projectDir . '/phpunit.xml')
         );
     }
