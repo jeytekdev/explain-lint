@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace ExplainLint\Doctrine;
+namespace Jeytekdev\ExplainLint\Doctrine;
 
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Driver\Middleware\AbstractConnectionMiddleware;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
-use ExplainLint\Recorder\CapturedQuery;
-use ExplainLint\Recorder\QueryRecorder;
+use Jeytekdev\ExplainLint\Recorder\CapturedQuery;
+use Jeytekdev\ExplainLint\Recorder\QueryRecorder;
 
 final class ExplainLintConnection extends AbstractConnectionMiddleware
 {

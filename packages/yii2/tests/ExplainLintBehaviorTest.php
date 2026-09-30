@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace ExplainLint\Yii2\Tests;
+namespace Jeytekdev\ExplainLint\Yii2\Tests;
 
-use ExplainLint\Recorder\QueryRecorder;
-use ExplainLint\Yii2\ExplainLintBehavior;
+use Jeytekdev\ExplainLint\Recorder\QueryRecorder;
+use Jeytekdev\ExplainLint\Yii2\ExplainLintBehavior;
 use PHPUnit\Framework\TestCase;
 use yii\db\Connection;
 

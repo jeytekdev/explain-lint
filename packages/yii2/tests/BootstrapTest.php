@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace ExplainLint\Yii2\Tests;
+namespace Jeytekdev\ExplainLint\Yii2\Tests;
 
-use ExplainLint\Yii2\Bootstrap;
+use Jeytekdev\ExplainLint\Yii2\Bootstrap;
 use PHPUnit\Framework\TestCase;
 use yii\console\Application;
 use yii\db\Connection;

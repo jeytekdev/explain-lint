@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ExplainLint\Yii2;
+namespace Jeytekdev\ExplainLint\Yii2;
 
 use yii\base\Application;
 use yii\base\BootstrapInterface;
@@ -20,7 +20,7 @@ use yii\db\Connection;
  * auto-discovery:
  *
  *   'bootstrap' => [
- *       ['class' => \ExplainLint\Yii2\Bootstrap::class, 'connectionIds' => ['db', 'db_reporting']],
+ *       ['class' => \Jeytekdev\ExplainLint\Yii2\Bootstrap::class, 'connectionIds' => ['db', 'db_reporting']],
  *   ],
  */
 final class Bootstrap implements BootstrapInterface

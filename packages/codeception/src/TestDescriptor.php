@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ExplainLint\Codeception;
+namespace Jeytekdev\ExplainLint\Codeception;
 
 use Codeception\Test\Descriptor;
 use Codeception\Test\Interfaces\Descriptive;

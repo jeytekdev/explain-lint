@@ -17,12 +17,12 @@ vendor/bin/phpunit -c packages/core/phpunit.xml.dist --testsuite integration
 
 - `packages/core` — everything engine/rule/reporting related, framework-agnostic. Most PRs that add a new rule or reason code touch only this package.
 - `packages/laravel`, `packages/doctrine`, `packages/yii2` — thin capture adapters. They should stay thin: SQL parsing, rule evaluation and reporting all belong in core.
-- `packages/codeception` — not a capture adapter, an *analysis-trigger* adapter: Codeception never bootstraps PHPUnit's native `<extensions>` mechanism, so `ExplainLint\PHPUnit\ExplainLintExtension` never runs under `codecept run`. This package wires the same `TestAnalysisRunner`/reporters to Codeception's own `Extension`/event dispatcher instead. Required alongside any capture adapter whenever the consuming project runs tests via `codecept run`.
+- `packages/codeception` — not a capture adapter, an *analysis-trigger* adapter: Codeception never bootstraps PHPUnit's native `<extensions>` mechanism, so `Jeytekdev\ExplainLint\PHPUnit\ExplainLintExtension` never runs under `codecept run`. This package wires the same `TestAnalysisRunner`/reporters to Codeception's own `Extension`/event dispatcher instead. Required alongside any capture adapter whenever the consuming project runs tests via `codecept run`.
 - If you're changing a shared DTO (`CapturedQuery`, `Violation`, `Verdict`, ...), update every bridge in the same PR — that's the whole point of the monorepo.
 
 ## Adding a new EXPLAIN rule
 
-1. Add a case to `ExplainLint\ReasonCode` (core) with a `defaultSeverity()`.
+1. Add a case to `Jeytekdev\ExplainLint\ReasonCode` (core) with a `defaultSeverity()`.
 2. Emit `PlanFinding` for it from `MySqlAdapter`/`PostgresAdapter::analyze()`.
 3. Add unit tests against fixture EXPLAIN output (`packages/core/tests/Unit/Adapter`) — no real database needed, `analyze()` is a pure function of the parsed plan.
 4. If the rule needs table-size tiering, add the reason code to `RuleEngine::SCAN_REASON_CODES`.
@@ -70,7 +70,7 @@ and point the `path` repository `url` at `/opt/explain-lint/packages/...` instea
 
 ### `EXPLAIN ANALYZE` mode
 
-`ExplainLint\Engine\ExplainMode` has a single `Plan` case today by design — `Analyze` executes the query for real, which isn't safe to do unconditionally against every captured statement (including writes). This needs an explicit opt-in story (e.g. read-only queries only, or a config allowlist) before it can be added safely.
+`Jeytekdev\ExplainLint\Engine\ExplainMode` has a single `Plan` case today by design — `Analyze` executes the query for real, which isn't safe to do unconditionally against every captured statement (including writes). This needs an explicit opt-in story (e.g. read-only queries only, or a config allowlist) before it can be added safely.
 
 ### Historical analytics / HTML report
 

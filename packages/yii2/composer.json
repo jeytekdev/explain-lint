@@ -23,7 +23,7 @@
     ],
     "require": {
         "php": "^8.1",
-        "jeytekdev/explain-lint": "^1.0",
+        "jeytekdev/explain-lint": "^2.0",
         "yiisoft/yii2": "^2.0.45"
     },
     "require-dev": {
@@ -37,18 +37,18 @@
     ],
     "autoload": {
         "psr-4": {
-            "ExplainLint\\Yii2\\": "src/"
+            "Jeytekdev\\ExplainLint\\Yii2\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ExplainLint\\Yii2\\Tests\\": "tests/"
+            "Jeytekdev\\ExplainLint\\Yii2\\Tests\\": "tests/"
         }
     },
     "extra": {
-        "bootstrap": "ExplainLint\\Yii2\\Bootstrap",
+        "bootstrap": "Jeytekdev\\ExplainLint\\Yii2\\Bootstrap",
         "branch-alias": {
-            "dev-master": "1.x-dev"
+            "dev-master": "2.x-dev"
         }
     },
     "minimum-stability": "stable",

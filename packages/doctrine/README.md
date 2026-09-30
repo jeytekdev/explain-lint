@@ -15,7 +15,7 @@ Register the middleware wherever you build your `Doctrine\DBAL\Configuration` (i
 ```php
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
-use ExplainLint\Doctrine\ExplainLintMiddleware;
+use Jeytekdev\ExplainLint\Doctrine\ExplainLintMiddleware;
 
 $configuration = new Configuration();
 $configuration->setMiddlewares([new ExplainLintMiddleware('default')]);
@@ -31,7 +31,7 @@ doctrine:
         connections:
             default:
                 middlewares:
-                    - ExplainLint\Doctrine\ExplainLintMiddleware
+                    - Jeytekdev\ExplainLint\Doctrine\ExplainLintMiddleware
 ```
 
 Then wire up the PHPUnit extension (see [core README](https://github.com/jeytekdev/explain-lint/blob/master/packages/core/README.md#install)):

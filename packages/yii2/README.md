@@ -23,7 +23,7 @@ If your test connection uses a different component ID than `db`, or you have mor
 
 ```php
 'bootstrap' => [
-    ['class' => \ExplainLint\Yii2\Bootstrap::class, 'connectionIds' => ['db', 'db_reporting']],
+    ['class' => \Jeytekdev\ExplainLint\Yii2\Bootstrap::class, 'connectionIds' => ['db', 'db_reporting']],
 ],
 ```
 

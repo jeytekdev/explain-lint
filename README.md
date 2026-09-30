@@ -97,6 +97,16 @@ OrdersTest::test_pending_orders
 
 In `strict` mode, this fails `vendor/bin/phpunit`. In `warn` mode, it's reported but the build stays green — useful for rolling this out on a legacy codebase one rule at a time.
 
+## Upgrading to v2.0
+
+v2.0.0 renamed the PHP namespace of every package from `ExplainLint\...` to `Jeytekdev\ExplainLint\...` (e.g. `ExplainLint\Pdo\ExplainLintPdo` is now `Jeytekdev\ExplainLint\Pdo\ExplainLintPdo`) — a bare, unprefixed top-level namespace can collide with an unrelated package that happens to pick the same name, and vendor-prefixing it closes that off for good. This is a breaking change:
+
+- Update every `use ExplainLint\...` in your own code to `use Jeytekdev\ExplainLint\...`.
+- If you registered the PHPUnit extension in `phpunit.xml` or the Codeception extension in `codeception.yml` by hand (rather than via `explain-lint:install`), update the `class="..."`/YAML class-key values to the new FQCN too.
+- Re-run `composer update` — Yii2's `extra.bootstrap` and Laravel's `extra.laravel.providers` auto-discovery entries changed along with the namespace and pick up automatically.
+
+No configuration-file (`explain-lint.php`) changes are needed — its shape is unaffected by this rename.
+
 ## Roadmap / not in this release
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for good-first-issue-sized scope:

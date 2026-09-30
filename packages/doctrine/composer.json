@@ -24,7 +24,7 @@
     ],
     "require": {
         "php": "^8.1",
-        "jeytekdev/explain-lint": "^1.0",
+        "jeytekdev/explain-lint": "^2.0",
         "doctrine/dbal": "^3.2 || ^4.0"
     },
     "require-dev": {
@@ -32,12 +32,12 @@
     },
     "autoload": {
         "psr-4": {
-            "ExplainLint\\Doctrine\\": "src/"
+            "Jeytekdev\\ExplainLint\\Doctrine\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ExplainLint\\Doctrine\\Tests\\": "tests/"
+            "Jeytekdev\\ExplainLint\\Doctrine\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "stable",
@@ -47,7 +47,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.x-dev"
+            "dev-master": "2.x-dev"
         }
     }
 }

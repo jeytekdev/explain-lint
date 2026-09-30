@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace ExplainLint\Doctrine\Tests;
+namespace Jeytekdev\ExplainLint\Doctrine\Tests;
 
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
-use ExplainLint\Doctrine\ExplainLintMiddleware;
-use ExplainLint\Recorder\QueryRecorder;
+use Jeytekdev\ExplainLint\Doctrine\ExplainLintMiddleware;
+use Jeytekdev\ExplainLint\Recorder\QueryRecorder;
 use PHPUnit\Framework\TestCase;
 
 /**

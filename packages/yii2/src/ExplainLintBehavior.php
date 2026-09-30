@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace ExplainLint\Yii2;
+namespace Jeytekdev\ExplainLint\Yii2;
 
-use ExplainLint\Pdo\ExplainLintPdo;
+use Jeytekdev\ExplainLint\Pdo\ExplainLintPdo;
 use yii\base\Behavior;
 use yii\base\Event;
 use yii\db\Connection;
