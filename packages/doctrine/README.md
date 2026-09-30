@@ -40,6 +40,23 @@ Then wire up the PHPUnit extension (see [core README](../core/README.md#install)
 vendor/bin/explain-lint explain-lint:install
 ```
 
+## Running under Codeception
+
+This package only handles capture (the DBAL `Middleware`) — the report step
+is core's PHPUnit `<extensions>` mechanism, registered via `phpunit.xml`.
+
+**If your suite runs via `vendor/bin/codecept run` instead of
+`vendor/bin/phpunit`/`pest`, that mechanism never fires** — Codeception 5
+doesn't bootstrap PHPUnit's native extension system. The middleware will
+still capture every query, but nothing will ever be analyzed or printed:
+no error, no warning, just a report that never appears.
+
+Install [`jeytekdev/explain-lint-codeception`](../codeception/README.md) too,
+and register it in `codeception.yml` instead of `phpunit.xml`. Use
+`explain-lint:install --config-only` (not the plain form) to generate
+`explain-lint.php` without also wiring `phpunit.xml`, since Codeception never
+reads that file.
+
 ## Known limitation: PDO-only drivers
 
 explain-lint needs the real `\PDO` handle behind a connection to re-run `EXPLAIN` on the exact same session. This bridge supports the `pdo_mysql` and `pdo_pgsql` drivers only — native drivers (`mysqli`, `pgsql`, `sqlite3`) have no `\PDO` to hand back, so queries on those simply aren't captured (no error, nothing to analyze).

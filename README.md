@@ -39,6 +39,8 @@ vendor/bin/explain-lint explain-lint:install
 
 → [full Laravel guide](packages/laravel/README.md)
 
+Running tests via `codecept run` instead? Also `composer require --dev jeytekdev/explain-lint-codeception` — see [its guide](packages/codeception/README.md).
+
 **Symfony / Doctrine DBAL:**
 
 ```bash
@@ -46,6 +48,8 @@ composer require --dev jeytekdev/explain-lint-doctrine
 ```
 
 → [full Doctrine guide](packages/doctrine/README.md)
+
+Running tests via `codecept run` instead? Also `composer require --dev jeytekdev/explain-lint-codeception` — see [its guide](packages/codeception/README.md).
 
 **Yii2:**
 
@@ -55,6 +59,8 @@ vendor/bin/explain-lint explain-lint:install
 ```
 
 → [full Yii2 guide](packages/yii2/README.md)
+
+Running tests via `codecept run` instead? Also `composer require --dev jeytekdev/explain-lint-codeception` — see [its guide](packages/codeception/README.md).
 
 **Bare PDO, no framework:**
 
