@@ -1,6 +1,6 @@
 # jeytekdev/explain-lint-yii2
 
-Yii2 bridge for [jeytekdev/explain-lint](../core/README.md) — re-runs `EXPLAIN` against every query your test suite executes, and fails the build on full table scans, lost indexes, filesort and temporary tables.
+Yii2 bridge for [jeytekdev/explain-lint](https://github.com/jeytekdev/explain-lint/blob/master/packages/core/README.md) — re-runs `EXPLAIN` against every query your test suite executes, and fails the build on full table scans, lost indexes, filesort and temporary tables.
 
 Implemented as a `yii\base\Behavior` attached to `yii\db\Connection`, not a query-log parser — it replaces `$connection->pdo` with a thin wrapper around the exact same, already-open `\PDO` handle right after Yii2 finishes opening it (`Connection::EVENT_AFTER_OPEN`), so nothing about your connection's own setup (attributes, `emulatePrepare`, charset) is disturbed, and EXPLAIN always runs on that same connection/session.
 
@@ -27,7 +27,7 @@ If your test connection uses a different component ID than `db`, or you have mor
 ],
 ```
 
-Then wire up the PHPUnit extension (see [core README](../core/README.md#install)):
+Then wire up the PHPUnit extension (see [core README](https://github.com/jeytekdev/explain-lint/blob/master/packages/core/README.md#install)):
 
 ```bash
 vendor/bin/explain-lint explain-lint:install
@@ -45,7 +45,7 @@ Run this from your **project root** (where `composer.json`/`vendor/` live). Set 
 
 Then run your suite as usual — no other code changes needed.
 
-**If your tests run via `vendor/bin/codecept run`** (the default for the Yii2 basic/advanced templates), run `explain-lint:install --config-only` instead of the plain form above — Codeception never bootstraps PHPUnit's `<extensions>` mechanism, so registering the PHPUnit extension in `phpunit.xml` is pointless under `codecept run` even when the file exists. Install [`jeytekdev/explain-lint-codeception`](../codeception/README.md) too, and register it in `codeception.yml`. This `ExplainLintBehavior` (the part that wraps the connection's PDO) is unaffected either way.
+**If your tests run via `vendor/bin/codecept run`** (the default for the Yii2 basic/advanced templates), run `explain-lint:install --config-only` instead of the plain form above — Codeception never bootstraps PHPUnit's `<extensions>` mechanism, so registering the PHPUnit extension in `phpunit.xml` is pointless under `codecept run` even when the file exists. Install [`jeytekdev/explain-lint-codeception`](https://github.com/jeytekdev/explain-lint/blob/master/packages/codeception/README.md) too, and register it in `codeception.yml`. This `ExplainLintBehavior` (the part that wraps the connection's PDO) is unaffected either way.
 
 ## Reading the report
 

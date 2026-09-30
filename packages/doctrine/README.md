@@ -1,6 +1,6 @@
 # jeytekdev/explain-lint-doctrine
 
-Doctrine DBAL bridge for [jeytekdev/explain-lint](../core/README.md) — re-runs `EXPLAIN` against every query your test suite executes, and fails the build on full table scans, lost indexes, filesort and temporary tables.
+Doctrine DBAL bridge for [jeytekdev/explain-lint](https://github.com/jeytekdev/explain-lint/blob/master/packages/core/README.md) — re-runs `EXPLAIN` against every query your test suite executes, and fails the build on full table scans, lost indexes, filesort and temporary tables.
 
 Implemented as a `Doctrine\DBAL\Driver\Middleware`, not the old `SQLLogger` — `SQLLogger` is deprecated and has been removed entirely in DBAL 4.x. Compatible with `doctrine/dbal: ^3.2 || ^4.0`.
 
@@ -34,7 +34,7 @@ doctrine:
                     - ExplainLint\Doctrine\ExplainLintMiddleware
 ```
 
-Then wire up the PHPUnit extension (see [core README](../core/README.md#install)):
+Then wire up the PHPUnit extension (see [core README](https://github.com/jeytekdev/explain-lint/blob/master/packages/core/README.md#install)):
 
 ```bash
 vendor/bin/explain-lint explain-lint:install
@@ -51,7 +51,7 @@ doesn't bootstrap PHPUnit's native extension system. The middleware will
 still capture every query, but nothing will ever be analyzed or printed:
 no error, no warning, just a report that never appears.
 
-Install [`jeytekdev/explain-lint-codeception`](../codeception/README.md) too,
+Install [`jeytekdev/explain-lint-codeception`](https://github.com/jeytekdev/explain-lint/blob/master/packages/codeception/README.md) too,
 and register it in `codeception.yml` instead of `phpunit.xml`. Use
 `explain-lint:install --config-only` (not the plain form) to generate
 `explain-lint.php` without also wiring `phpunit.xml`, since Codeception never
